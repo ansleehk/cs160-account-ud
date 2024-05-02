@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("PRISMA_DATABASE_URL")
+}
+
+model Articles {
+  ArticleID          Int           @id @default(autoincrement())
+  Title              String        @db.VarChar(255)
+  StorageArticleUUID String        @unique(map: "StorageArticleUUID") @db.VarChar(255)
+  Active             Boolean       @default(true)
+  PdfFileSummary     String        @db.Text
+  Diagram            Diagram?
+  UserArticle        UserArticle[]
+}
+
+model Diagram {
+  ArticleID          Int      @unique(map: "ArticleID")
+  StorageDiagramUUID String   @unique(map: "StorageDiagramName") @db.VarChar(255)
+  Active             Boolean  @default(true)
+  Articles           Articles @relation(fields: [ArticleID], references: [ArticleID], onDelete: Cascade, onUpdate: NoAction, map: "Diagram_ibfk_1")
+}
+
+model UserArticle {
+  ArticleId Int
+  UserUUID  String   @db.Char(36)
+  Articles  Articles @relation(fields: [ArticleId], references: [ArticleID], onDelete: Cascade, map: "UserArticle_ibfk_1")
+  Users     Users    @relation(fields: [UserUUID], references: [UserUUID], onUpdate: Restrict, map: "UserArticle_ibfk_2")
+
+  @@id([ArticleId, UserUUID])
+  @@index([UserUUID], map: "UserUUID")
+}
+
+model Users {
+  UserUUID               String        @id @db.Char(36)
+  DisplayName            String        @db.VarChar(50)
+  Email                  String        @unique(map: "Email") @db.VarChar(50)
+  HashedPasswordWithSalt String        @db.Char(60)
+  Active                 Boolean       @default(true)
+  UserArticle            UserArticle[]
+}
