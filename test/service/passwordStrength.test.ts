@@ -16,8 +16,15 @@ describe('PasswordStrengthChecker', () => {
             expect(isStrong).toBe(true);
         });
 
-        it('should return true for a passphrase with special characters', async () => {
-            const password = 'MyPassphrase$With@SpecialCharacters123';
+        it('should return true for other strong passwords', async () => {
+            const password = 'I!!dAx70@66D18Q';
+            const passwordStrengthChecker = new PasswordStrengthChecker(password);
+            const isStrong = await passwordStrengthChecker.isPasswordStrong();
+            expect(isStrong).toBe(true);
+        });
+
+        it('should return true for other strong passwords 2', async () => {
+            const password = '53cureP@55word!!';
             const passwordStrengthChecker = new PasswordStrengthChecker(password);
             const isStrong = await passwordStrengthChecker.isPasswordStrong();
             expect(isStrong).toBe(true);
