@@ -7,9 +7,9 @@ import { errorHandlingMiddleware } from './middleware/restErrorHandler.js';
 const app = express();
 const PORT = 8080;
 
+app.use(express.json());
 app.use(morgan('combined'))
 
-const USER_API_ENDPOINT = 'user';
 
 const CORS_OPTIONS = {
   origin: "*",
@@ -19,7 +19,7 @@ const CORS_OPTIONS = {
 app.use(cors(CORS_OPTIONS));
 
 
-app.use(`/${USER_API_ENDPOINT}`, router);
+app.use(`/`, router);
 
 app.use(errorHandlingMiddleware);
 

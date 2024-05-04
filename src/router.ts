@@ -6,13 +6,15 @@ import * as controller from './controller/index.js';
 
 const router = Router();
 
+const USER_API_ENDPOINT = 'user';
+
 router.use(captchaVerify);
 
 router.use(userIdExtractor);
 
-router.put('/:userId', controller.updateUser);
+router.put(`account/:userId/${USER_API_ENDPOINT}`, controller.updateUser);
 
-router.delete('/:userId', controller.deleteUser);
+router.delete(`account/:userId/${USER_API_ENDPOINT}`, controller.deleteUser);
 
 router.use(handleExpressValidation);
 
