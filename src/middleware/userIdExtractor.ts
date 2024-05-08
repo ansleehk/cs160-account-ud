@@ -10,7 +10,7 @@ declare global {
 
 export default async function userIdExtractor(req: Request, res: Response, next: NextFunction){
     const urlSplit = req.url.split('/');
-    const userId = urlSplit[1];
+    const userId = urlSplit[2];
 
     req.userId = userId;
     next();
