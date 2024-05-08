@@ -14,20 +14,23 @@ export default class CaptchaService{
         this.secretKey = this.loadSecretKeyFromEnv();
     }
 
-    private async sendVerifyRequest (
-        clientResponse: string,
+    private async sendVerifyRequest(
+        clientToken: string,
         remoteIp: string
-    ){
-        const GOOGLE_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
+    ) {
+        const GOOGLE_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify?";
         try {
-            const response = await axios.post(GOOGLE_VERIFY_URL, {
-                secret: this.secretKey,
-                response: clientResponse,
-                remoteip: remoteIp
-            });
-    
-            return response.data;
-        } catch (error){
+            const response = await fetch(GOOGLE_VERIFY_URL
+                + new URLSearchParams({
+                    secret: this.secretKey,
+                    response: clientToken,
+                    remoteip: remoteIp
+                }), {
+                method: "POST"
+            })
+
+            return response.json();
+        } catch (error) {
             throw new CaptchaError("Failed to get result response from Google");
         }
     }
