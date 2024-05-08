@@ -8,10 +8,10 @@ const router = Router();
 
 const USER_API_ENDPOINT = 'user';
 
-router.use(captchaVerify, userIdExtractor, handleExpressValidation);
+router.use(captchaVerify);
 
-router.put(`/account/:userId/${USER_API_ENDPOINT}`, controller.updateUser);
+router.put(`/account/:userId/${USER_API_ENDPOINT}`, userIdExtractor, handleExpressValidation, controller.updateUser);
 
-router.delete(`/account/:userId/${USER_API_ENDPOINT}`, controller.deleteUser);
+router.delete(`/account/:userId/${USER_API_ENDPOINT}`, userIdExtractor, handleExpressValidation, controller.deleteUser);
 
 export default router;
