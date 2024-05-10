@@ -31,6 +31,7 @@ export default class CaptchaService{
 
             return response.json();
         } catch (error) {
+            console.error(error)
             throw new CaptchaError("Failed to get result response from Google");
         }
     }
